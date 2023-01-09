@@ -27,6 +27,7 @@ jobs:
   test-artifact-download:
     name: Test Artifact Download
     runs-on: ubuntu-latest
+    needs: test-artifact-upload
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
