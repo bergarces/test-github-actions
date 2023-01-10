@@ -13,19 +13,16 @@ jobs:
 
       - run: mkdir -p ./artifacts/directory{1,2}
 
-      - run: echo "This is a test file" > ./artifacts/directory1/test-file-1.txt
+      - run: echo "This is a test file" > ./packages/app/packages/xxx-yyy-10.22.0.AppImage
 
-      - run: echo "This is another test file" > ./artifacts/directory2/test-file-2.txt
+      - run: echo "This is another test file" > ./packages/app/packages/xxx-yyy-10.22.0.dmg
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: test-artifact-1
-          path: ./artifacts/directory1/test-file-1.txt
+      - run: echo "This is the last test file" > ./packages/app/packages/xxx-yyy-10.22.0.exe
 
       - uses: actions/upload-artifact@v3
         with:
-          name: test-artifact-2
-          path: ./artifacts/directory2/test-file-2.txt
+          name: packaged-apps
+          path: packages/app/packages/xxx-yyy-[0-9]+.[0-9]+.[0-9]+.(AppImage|dmg|exe)
 
   test-artifact-download:
     name: Test Artifact Download
@@ -37,16 +34,8 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: test-artifact-1
+          name: packaged-apps
           path: artifacts
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: test-artifact-2
-          path: artifacts
-
-      - name: Display structure of downloaded files
-        run: find ./artifacts -type f
 
       - name: Get checksums (SHA512) from artifacts
         run: find ./artifacts -type f -exec sha512sum {} \; | sed -e 's/ .*[/ ]/ /' > ./checksums.txt
