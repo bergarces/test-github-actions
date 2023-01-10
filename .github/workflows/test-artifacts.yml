@@ -22,7 +22,10 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: packaged-apps
-          path: packages/app/packages/xxx-yyy-[0-9]+.[0-9]+.[0-9]+.(AppImage|dmg|exe)
+          path: |
+            packages/app/packages/*.dmg
+            packages/app/packages/*.AppImage
+            packages/app/packages/*.exe
 
   test-artifact-download:
     name: Test Artifact Download
