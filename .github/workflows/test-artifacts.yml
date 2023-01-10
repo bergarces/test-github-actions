@@ -19,10 +19,13 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: test-artifacts
-          path: |
-            ./artifacts/directory1/test-file-1.txt
-            ./artifacts/directory2/test-file-2.txt
+          name: test-artifact-1
+          path: ./artifacts/directory1/test-file-1.txt
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: test-artifact-2
+          path: ./artifacts/directory2/test-file-2.txt
 
   test-artifact-download:
     name: Test Artifact Download
@@ -34,8 +37,21 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: test-artifacts
+          name: test-artifact-1
+          path: artifacts
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: test-artifact-2
           path: artifacts
 
       - name: Display structure of downloaded files
         run: find ./artifacts -type f
+
+      - name: Get checksums (SHA512) from artifacts
+        run: find ./artifacts -type f -exec sha512sum {} \; | sed -e 's!./artifacts/!!' > ./checksums.txt
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: checksums
+          path: ./checksums.txt
