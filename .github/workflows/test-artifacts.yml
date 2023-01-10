@@ -49,7 +49,7 @@ jobs:
         run: find ./artifacts -type f
 
       - name: Get checksums (SHA512) from artifacts
-        run: find ./artifacts -type f -exec sha512sum {} \; | sed -e 's!./artifacts/!!' > ./checksums.txt
+        run: find ./artifacts -type f -exec sha512sum {} \; | sed -e 's/ .*[/ ]/ /' > ./checksums.txt
 
       - uses: actions/upload-artifact@v3
         with:
